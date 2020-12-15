@@ -1,0 +1,9 @@
+::ng-deep {
+  .angular-editor-textarea {
+    resize: none !important;
+  }
+
+  .angular-editor-textarea:focus {
+    outline: none !important;
+  }
+}

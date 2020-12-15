@@ -1,0 +1,22 @@
+<p>
+    <b>Tree</b>
+</p>
+<br />
+<div (click)="selectAll()" style="margin-bottom: 5px;">
+    <input type="checkbox" class="css-checkbox" [(ngModel)]="allSelected" />
+    <label class="css-label lite-gray-check">Select All</label>
+</div>
+<tree-root class="dupa" #tree [nodes]="nodes" [options]="options">
+    <ng-template #loadingTemplate>
+        <img src="assets/images/loaders/loading_puntos.gif" width="90px" />
+    </ng-template>
+
+    <ng-template #treeNodeTemplate let-node let-index="index">
+        <div (click)="onNodeClick(node)">
+            <input type="checkbox" class="css-checkbox" [(ngModel)]="node.data.selected" />
+            <label class="css-label lite-gray-check">{{ node.data.name }}</label>
+        </div>
+    </ng-template>
+</tree-root>
+<br />
+<button (click)="submit()">Submit</button>

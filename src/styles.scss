@@ -1,1 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~angular-tree-component/dist/angular-tree-component.css";
+
+.dupa {
+  .node-wrapper:hover {
+    background: transparent;
+  }
+
+  .node-content-wrapper:hover {
+    background: #f8f8f8;
+    border: none;
+  }
+
+  .node-content-wrapper-focused,
+  .node-content-wrapper-active {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .node-content-wrapper,
+  .tree-children {
+    position: relative;
+  }
+
+  .node-content-wrapper::before,
+  .tree-children::after {
+    content: "";
+    position: absolute;
+  }
+
+  .node-content-wrapper::before {
+    border-bottom: 1px solid lightgrey;
+    border-left: 1px solid lightgrey;
+    height: 28px;
+    top: -17px;
+    width: 20px;
+    left: -28px;
+  }
+
+  .tree-node-level-1
+    > tree-node-wrapper
+    > .node-wrapper
+    > .node-content-wrapper::before {
+    display: none;
+  }
+
+  .tree-node-leaf > .node-wrapper > .node-content-wrapper::before {
+    width: 25px;
+  }
+
+  .tree-children::after {
+    border-left: 1px solid lightgrey;
+    height: 100%;
+    top: -15px;
+    left: -15px;
+  }
+
+  tree-node:last-child > .tree-node > .tree-children::after {
+    border-left: none;
+  }
+
+  .toggle-children {
+    z-index: 1;
+  }
+}
+
+// .node-name {
+//   display: inline;
+//   padding: 5px;
+// }
+
+// .node-checkbox {
+// }
