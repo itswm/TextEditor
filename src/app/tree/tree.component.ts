@@ -1,72 +1,34 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TreeNode } from 'angular-tree-component';
+import { TreeService } from './tree.service';
 
 @Component({
     selector: 'app-tree',
     templateUrl: './tree.component.html',
     styleUrls: ['./tree.component.scss']
 })
-export class TreeComponent implements OnChanges, AfterViewInit {
-    @ViewChild('tree') tree;
+export class TreeComponent implements OnInit {
+    @ViewChild('tree') tree: any;
     @Output() submitted = new EventEmitter<number[]>();
     @Input() selection: number[] = [];
 
     public options = {};
     public allSelected = false;
-    public nodes: any[] = [
-        {
-            id: 1,
-            selected: false,
-            name: 'root1',
-            children: [
-                { id: 2, name: 'child1', selected: false },
-                { id: 3, name: 'child2', selected: false }
-            ]
-        },
-        {
-            id: 4,
-            name: 'root2',
-            selected: false,
-            children: [
-                { id: 5, name: 'child2.1', selected: false },
-                {
-                    id: 6,
-                    name: 'child2.2',
-                    selected: false,
-                    children: [
-                        {
-                            id: 7,
-                            name: 'child2.2.1',
-                            selected: false,
-                            children: [{ id: 8, name: 'child2.2.1.1', selected: false }]
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
+    public isLoading = true;
+    public nodes: any[];
 
-    private flatTree: any[] = [];
+    private nodeReferences: any[] = [];
 
-    constructor() {
-        this.flattenTree();
-    }
+    constructor(private _treeService: TreeService) {}
 
-    public ngOnChanges(): void {
-        if (this.selection && this.selection.length) {
-            this.flatTree.forEach(item => {
-                if (this.selection.find(id => id === item.id)) {
-                    item.selected = true;
-                }
-            });
-            console.log(this.flatTree);
-        }
-    }
-
-    public ngAfterViewInit(): void {
-        for (const root of this.tree.treeModel.roots) {
-            root.expand();
-        }
+    public ngOnInit(): void {
+        this._treeService.getTree().subscribe((nodes: any[]) => {
+            this.nodes = nodes;
+            this.isLoading = false;
+            this.flattenTree();
+            this.mergeTreeWithInput();
+            setTimeout(() => this.expandSelectedNodes());
+        });
     }
 
     public onNodeClick(node: TreeNode): void {
@@ -78,29 +40,21 @@ export class TreeComponent implements OnChanges, AfterViewInit {
 
     public selectAll(): void {
         this.allSelected = !this.allSelected;
-        this.flatTree.forEach((item: any) => item.selected = this.allSelected);
+        this.nodeReferences.forEach((item: any) => item.selected = this.allSelected);
     }
 
     public submit(): void {
-        const results = this.flatTree.filter(o => o.selected).map(item => (item.id));
+        const results = this.nodeReferences.filter(o => o.selected).map(item => (item.id));
         this.submitted.emit(results);
     }
 
-    private flattenTree(): void {
-        for (const node of this.nodes) {
-            this.flattenTreeNode(node)
-        }
-    }
-
-    private flattenTreeNode(node: any): void {
-        if (node.children && node.children.length) {
-            this.flatTree.push(node);
-            for (const child of node.children) {
-                this.flattenTreeNode(child);
-            }
-        }
-        else {
-            this.flatTree.push(node);
+    private mergeTreeWithInput(): void {
+        if (this.selection && this.selection.length) {
+            this.nodeReferences.forEach(nodeRef => {
+                if (this.selection.find(id => id === nodeRef.id)) {
+                    nodeRef.selected = true;
+                }
+            });
         }
     }
 
@@ -114,5 +68,38 @@ export class TreeComponent implements OnChanges, AfterViewInit {
         else {
             node.data.selected = state;
         }
+    }
+
+    private flattenTree(): void {
+        for (const node of this.nodes) {
+            this.flattenTreeNode(node)
+        }
+    }
+
+    private flattenTreeNode(node: any): void {
+        if (node.children && node.children.length) {
+            this.nodeReferences.push(node);
+            for (const child of node.children) {
+                this.flattenTreeNode(child);
+            }
+        }
+        else {
+            this.nodeReferences.push(node);
+        }
+    }
+
+    private expandSelectedNodes(): void {
+        this.nodeReferences.forEach((nodeRef: any) => {
+            if (nodeRef.selected) {
+                const treeNode: TreeNode = this.tree.treeModel.getNodeById(nodeRef.id);
+                if (treeNode) {
+                    let currentNode = treeNode.parent;
+                    while (currentNode) {
+                        currentNode.expand();
+                        currentNode = currentNode.parent;
+                    }
+                }
+            }
+        });
     }
 }

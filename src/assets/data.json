@@ -1,0 +1,114 @@
+[
+    {
+        "id": 1,
+        "parentId": 0,
+        "name": "Wojciech",
+        "job": "Dyrektor",
+        "children": [
+            {
+                "id": 4,
+                "parentId": 1,
+                "name": "Tomasz",
+                "job": "Manager",
+                "children": [
+                    {
+                        "id": 6,
+                        "parentId": 4,
+                        "name": "Włodzimierz",
+                        "job": "Pracownik",
+                        "children": []
+                    },
+                    {
+                        "id": 7,
+                        "parentId": 4,
+                        "name": "Kamil",
+                        "job": "Pracownik",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "parentId": 1,
+                "name": "Andrzej",
+                "job": "Pracownik",
+                "children": []
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "parentId": 0,
+        "name": "Adam",
+        "job": "Dyrektor",
+        "children": [
+            {
+                "id": 8,
+                "parentId": 2,
+                "name": "Krystian",
+                "job": "Manager",
+                "children": [
+                    {
+                        "id": 9,
+                        "parentId": 8,
+                        "name": "Jonasz",
+                        "job": "Pracownik",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "parentId": 0,
+        "name": "Waldemar",
+        "job": "Dyrektor",
+        "children": [
+            {
+                "id": 10,
+                "parentId": 3,
+                "name": "Jakub",
+                "job": "Pracownik",
+                "children": [
+                    {
+                        "id": 13,
+                        "parentId": 10,
+                        "name": "Ariel",
+                        "job": "Podwładny",
+                        "children": []
+                    },
+                    {
+                        "id": 14,
+                        "parentId": 10,
+                        "name": "Ignacy",
+                        "job": "Podwładny",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": 11,
+                "parentId": 3,
+                "name": "Marcin",
+                "job": "Pracownik",
+                "children": [
+                    {
+                        "id": 15,
+                        "parentId": 11,
+                        "name": "Igor",
+                        "job": "Podwładny",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": 12,
+                "parentId": 3,
+                "name": "Łukasz",
+                "job": "Pracownik",
+                "children": []
+            }
+        ]
+    }
+]
